@@ -17,9 +17,18 @@ export const useAuth = () => {
   return useContext(AuthContext);
 };
 
+const safeJSONParse = (str, fallback = null) => {
+  try {
+    return str ? JSON.parse(str) : fallback;
+  } catch (error) {
+    console.error('Error parsing JSON:', error);
+    return fallback;
+  }
+};
+
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
-    user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null,
+    user: safeJSONParse(localStorage.getItem("user")),
     token: localStorage.getItem("token") || null,
     isAuthenticated: !!localStorage.getItem("token"),
     loading: false,

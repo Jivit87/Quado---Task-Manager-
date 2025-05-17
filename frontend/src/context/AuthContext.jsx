@@ -19,7 +19,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
-    user: JSON.parse(localStorage.getItem("user")) || null,
+    user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null,
     token: localStorage.getItem("token") || null,
     isAuthenticated: !!localStorage.getItem("token"),
     loading: false,

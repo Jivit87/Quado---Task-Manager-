@@ -58,8 +58,13 @@ const getMotivationalQuote = async () => {
 };
 
 const getWeeklyFocusSuggestion = async () => {
-  const response = await axios.get("/ai/weekly-focus", configureAxios());
-  return response.data;
+  try {
+    const response = await axios.get(`${API_URL}/weekly-focus`, configureAxios()); // ✅ Fixed API path
+    return response.data;
+  } catch (error) {
+    console.error("Error getting weekly focus suggestion:", error);
+    throw error;
+  }
 };
 
 const aiService = {

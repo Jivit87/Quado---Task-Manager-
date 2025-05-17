@@ -27,9 +27,35 @@ const TaskSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
-  }
+  },
+  completedAt: {
+    type: Date,
+    default: null,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  priority: {
+    type: String,
+    enum: ["High", "Medium", "Low"],
+    default: "Medium",
+  },
 }, {
   timestamps: true
+});
+
+// Middleware to set completedAt date when status changes to Completed
+TaskSchema.pre("save", function (next) {
+  if (
+    this.isModified("status") &&
+    this.status === "Completed" &&
+    !this.completedAt
+  ) {
+    this.completedAt = new Date();
+  }
+  next();
 });
 
 module.exports = mongoose.model('Task', TaskSchema);

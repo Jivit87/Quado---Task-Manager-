@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const { protect } = require('../middleware/auth');
+
 const {
   getTasks,
   getTask,
@@ -9,8 +11,15 @@ const {
   deleteTask,
 } = require('../controllers/taskController');
 
-const { protect } = require('../middleware/auth');
+const {
+  getAnalytics,
+  exportTasksData,
+} = require('../controllers/analyticsController');
 
+router.get('/analytics', protect, getAnalytics);
+router.get('/export', protect, exportTasksData);
+
+// Task Routes
 router.route('/')
   .get(protect, getTasks)
   .post(protect, createTask);

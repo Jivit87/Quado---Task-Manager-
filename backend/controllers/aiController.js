@@ -1,7 +1,6 @@
 const { getGeminiModel } = require("../config/gemini");
 const Task = require("../models/Task");
 
-// Check task priority based on due date
 const suggestPriority = async (req, res) => {
   try {
     const { taskId } = req.params;
@@ -29,7 +28,6 @@ const suggestPriority = async (req, res) => {
     const timeLeft = dueDate - today;
     const daysLeft = Math.ceil(timeLeft / (1000 * 60 * 60 * 24));
     
-    // prompt
     const prompt = `
     Based on this task information, suggest an appropriate priority level (High, Medium, or Low):
     - Title: ${task.title}
@@ -56,7 +54,6 @@ const suggestPriority = async (req, res) => {
   }
 };
 
-// Generate daily plan
 const generateDailyPlan = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -85,7 +82,6 @@ const generateDailyPlan = async (req, res) => {
         return `${index + 1}. ${task.title} - Due in ${daysLeft} days - Status: ${task.status} - Priority: ${task.priority || 'Undefined'}`;
       }).join('\n');
       
-      // Prepare prompt for Gemini
       const prompt = `
       Based on these tasks, create an optimal daily plan selecting 3-4 most important tasks. 
       Format the output as a schedule with specific time slots.
@@ -132,7 +128,7 @@ const generateDailyPlan = async (req, res) => {
   }
 };
 
-// Generate task insights
+
 const getTaskInsights = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -219,7 +215,7 @@ const getMotivationalQuote = async (req, res) => {
     const prompt = `
     Generate a short, motivational quote about productivity.
     The quote should be inspiring and help someone stay motivated with their tasks.
-    Format it as: "Quote text" — Author Name
+    Format it as: "Quote text" 
     
     Keep it under 20 words total and different everytime.
     `;

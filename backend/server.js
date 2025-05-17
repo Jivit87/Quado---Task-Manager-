@@ -20,9 +20,11 @@ connectDB();
 // Routes
 const authRoutes = require("./routes/auth");
 const taskRoutes = require('./routes/taskRoutes');
+const aiRoutes = require("./routes/aiRoutes");
 
 app.use("/api/auth", authRoutes);
 app.use('/api/tasks', taskRoutes);
+app.use("/api/ai", aiRoutes);
 
 // For error handling
 app.use((err, req, res, next) => {

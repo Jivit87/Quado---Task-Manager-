@@ -22,6 +22,11 @@ A full-stack Task Management application built using the MERN stack (MongoDB, Ex
 </div>
 
 <div align="center">
+  <img src="frontend/public/login.png" alt="Login page" width="800"/>
+  <p><i>Login</i></p>
+</div>
+
+<div align="center">
   <img src="frontend/public/mobile.png" alt="Mobile View" width="400"/>
   <p><i>Mobile Responsive Design</i></p>
 </div>

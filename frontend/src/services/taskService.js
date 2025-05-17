@@ -1,52 +1,142 @@
 import axios from "axios";
 
+// Create axios instance with better configuration
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "/api",
+  timeout: 10000, // 10 second timeout
+  headers: {
+    'Content-Type': 'application/json',
+  }
 });
 
+// Request interceptor with better token handling
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        config.headers["Authorization"] = `Bearer ${token}`;
+      }
+      return config;
+    } catch (error) {
+      console.error("Error in request interceptor:", error);
+      return Promise.reject(error);
     }
-    return config;
   },
   (error) => {
+    console.error("Request interceptor error:", error);
     return Promise.reject(error);
   }
 );
 
-// Response interceptor to handle logging
+// Response interceptor with better error handling
 api.interceptors.response.use(
   (response) => {
-    // Only log non sensitive information
-    if (response.config.url.includes("/dashboard")) {
-      console.log("Dashboard data fetched successfully");
-    } else {
-      console.log(`API call to ${response.config.url} successful`);
+    try {
+      // Validate response data
+      if (!response.data) {
+        throw new Error("No data received from server");
+      }
+      return response;
+    } catch (error) {
+      console.error("Response validation error:", error);
+      return Promise.reject(error);
     }
-    return response;
   },
-  (error) => {
-    console.error("API Error:", error.message);
+  async (error) => {
+    const originalRequest = error.config;
+    
+    // Log the error details
+    console.error("API Error:", {
+      status: error.response?.status,
+      message: error.message,
+      url: originalRequest?.url
+    });
+
+    // Handle specific error cases
+    if (error.response) {
+      switch (error.response.status) {
+        case 401:
+          // Handle unauthorized - clear local storage and redirect to login
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          window.location.href = "/login";
+          break;
+        case 404:
+          // Log 404 errors specifically
+          console.error(`Endpoint not found: ${originalRequest?.url}`);
+          break;
+        case 500:
+          console.error("Server error occurred");
+          break;
+      }
+    }
+
     return Promise.reject(error);
   }
 );
+
+// Safe JSON parsing utility
+const safeJSONParse = (data, fallback = null) => {
+  try {
+    return data ? JSON.parse(data) : fallback;
+  } catch (error) {
+    console.error("JSON parsing error:", error);
+    return fallback;
+  }
+};
+
+// API endpoint validation
+const validateEndpoint = async (endpoint) => {
+  try {
+    const response = await api.head(endpoint);
+    return response.status === 200;
+  } catch (error) {
+    console.error(`Endpoint validation failed for ${endpoint}:`, error);
+    return false;
+  }
+};
 
 export const getTasks = async (filters = {}) => {
   try {
-    const queryParams = new URLSearchParams();
+    // Validate endpoint before making the request
+    const endpointExists = await validateEndpoint("/tasks");
+    if (!endpointExists) {
+      throw new Error("Tasks endpoint is not available. Please check your API configuration.");
+    }
 
+    const queryParams = new URLSearchParams();
     if (filters.category) queryParams.append("category", filters.category);
     if (filters.status) queryParams.append("status", filters.status);
     if (filters.dueDate) queryParams.append("dueDate", filters.dueDate);
 
     const query = queryParams.toString();
     const response = await api.get(`/tasks${query ? `?${query}` : ""}`);
-    return response.data;
+    
+    // Validate and sanitize response data
+    if (!response.data) {
+      throw new Error("No data received from server");
+    }
+
+    const tasks = Array.isArray(response.data) ? response.data : 
+                 Array.isArray(response.data.tasks) ? response.data.tasks :
+                 [];
+
+    return tasks;
   } catch (error) {
-    throw error.response ? error.response.data : new Error("Network error");
+    if (error.response) {
+      switch (error.response.status) {
+        case 404:
+          throw new Error("Tasks endpoint not found. Please check your API configuration.");
+        case 401:
+          throw new Error("Please log in to view tasks.");
+        case 403:
+          throw new Error("You don't have permission to view tasks.");
+        default:
+          throw new Error(error.response.data?.message || "Failed to fetch tasks");
+      }
+    }
+    throw new Error("Network error. Please check your connection.");
   }
 };
 

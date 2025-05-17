@@ -1,28 +1,48 @@
 # Quado
 
-A full-stack Task Management application built using the MERN stack (MongoDB, Express.js, React, Node.js). This app allows users to manage tasks efficiently with features like authentication, real-time updates, filtering, and a comprehensive analytics dashboard. The application also leverages Google's Gemini AI to provide intelligent task management and insights.
+A full-stack Task Management application built using the MERN stack (MongoDB, Express.js, React, Node.js). It offers secure authentication, smart task organization, real-time updates, and a rich analytics dashboard. Powered by Google Gemini AI for personalized productivity insights.
 
+---
 
-## Tech Stack
+## 📸 Screenshots
+
+<div align="center">
+  <img src="frontend/public/home.png" alt="Dashboard" width="800"/>
+  <p><i>Main Dashboard</i></p>
+</div>
+
+<div align="center">
+  <img src="frontend/public/insights.png" alt="Analytics" width="800"/>
+  <p><i>Analytics Dashboard</i></p>
+</div>
+
+<div align="center">
+  <img src="frontend/public/ai.png" alt="AI Assistant" width="800"/>
+  <p><i>AI Assistant</i></p>
+</div>
+
+<div align="center">
+  <img src="frontend/public/mobile.png" alt="Mobile View" width="400"/>
+  <p><i>Mobile Responsive Design</i></p>
+</div>
+
+---
+
+## ⚙️ Tech Stack
 
 ### Frontend
-- React 19
-- Vite
-- TailwindCSS
-- Framer Motion
-- React Router DOM
-- Axios
-- React Hot Toast
-- Recharts (for data visualization)
+- React 19, Vite
+- TailwindCSS, Framer Motion
+- React Router DOM, Axios
+- React Hot Toast, Recharts
 
 ### Backend
 - Node.js
 - Express.js
-- MongoDB (with Mongoose)
+- MongoDB (Mongoose)
 - JWT Authentication
 - Google Gemini AI Integration
-- Nodemailer
-- Node-cron
+
 
 ## 📁 Project Structure
 
@@ -85,41 +105,30 @@ A full-stack Task Management application built using the MERN stack (MongoDB, Ex
    ```
 
 ## Features
-- Modern UI with TailwindCSS
-- Responsive design
-- Real-time data visualization
-- Secure authentication
-- Task Management
-  - Create, edit, and delete tasks
-  - Task categorization (Personal, Work, Urgent, Other)
-  - Task status tracking (Pending, In-Progress, Completed)
-  - Due date management
-  - Priority levels
-  - Task filtering and sorting
-  - Task details view
-- Analytics Dashboard
-  - Task completion statistics
-  - Category distribution
-  - Overdue tasks tracking
-  - Due today tasks
-  - 30-day task history
-  - Performance insights
-- AI-powered task management with Gemini
-  - Daily Plan Generator
-  - Smart Task Priority Assistant
-  - Task Insights and Analytics
-  - Motivational Quotes
-  - Weekly Focus Suggestions
-- User Experience
-  - Toast notifications
-  - Loading states
-  - Error handling
-  - Responsive navigation
-  - Dark mode interface
-- Data Security
-  - JWT authentication
+
+- **Modern UI & UX**
+  - TailwindCSS design
+  - Responsive layout & dark mode
+  - Toasts, loaders, error handling
+
+- **Authentication & Security**
+  - JWT auth
   - Protected routes
-  - Secure API endpoints
+  - Secure APIs
+
+- **Task Management**
+  - Create, edit, delete tasks
+  - Categories, priorities, statuses
+  - Filters, sorting, due dates
+
+- **Analytics Dashboard**
+  - Completion stats, overdue & due-today
+  - Category breakdown
+  - 30-day history & performance insights
+
+- **AI Integration (Gemini)**
+  - Daily planner & smart priority
+  - Task insights, quotes, focus tips
 
 ## License
 This project is licensed under the ISC License.

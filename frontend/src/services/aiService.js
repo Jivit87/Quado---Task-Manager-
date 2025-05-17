@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = `${import.meta.env.VITE_API_URL}/ai`;
+const API_URL = `https://quado-task-manager-backend.onrender.com`;
 
 const getToken = () => {
   return localStorage.getItem("token");

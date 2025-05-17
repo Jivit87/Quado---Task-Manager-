@@ -36,7 +36,7 @@ app.get("/", (req, res) => {
   res.send("Task Management API is running");
 });
 
-const PORT = process.env.PORT || "https://quado-task-manager-backend.onrender.com";
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

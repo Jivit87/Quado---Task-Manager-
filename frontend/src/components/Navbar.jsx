@@ -43,7 +43,6 @@ const Navbar = () => {
       >
         <div className="container mx-auto px-4 sm:px-6 py-4">
           <div className="flex justify-between items-center">
-
             <Link to="/" className="flex items-center space-x-2 relative z-20">
               <span
                 className="text-xl sm:text-2xl font-extrabold text-[#00FF85]"
@@ -110,11 +109,11 @@ const Navbar = () => {
               {isAuthenticated ? (
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center space-x-2">
-                    <div className="w-8 h-8 rounded-full bg-[#2A2A2A] flex items-center justify-center overflow-hidden border border-[#677475]">
+                    <div className="relative w-8 h-8 rounded-full border border-[#677475] overflow-hidden bg-[#2A2A2A]">
                       <img
                         src={profile}
                         alt="Profile"
-                        className="rounded-full w-full h-full object-cover"
+                        className="absolute inset-0 w-full h-full object-cover object-center"
                       />
                     </div>
                     <span
@@ -184,11 +183,11 @@ const Navbar = () => {
                 {isAuthenticated ? (
                   <div className="flex flex-col space-y-4">
                     <div className="flex items-center space-x-2">
-                      <div className="w-8 h-8 rounded-full bg-[#2A2A2A] flex items-center justify-center overflow-hidden border border-[#677475]">
+                      <div className="relative w-8 h-8 rounded-full border border-[#677475] overflow-hidden bg-[#2A2A2A]">
                         <img
                           src={profile}
                           alt="Profile"
-                          className="rounded-full w-full h-full object-cover"
+                          className="absolute inset-0 w-full h-full object-cover object-center"
                         />
                       </div>
                       <span

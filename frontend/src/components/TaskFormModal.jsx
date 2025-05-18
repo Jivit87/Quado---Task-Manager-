@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getTask, createTask, updateTask } from '../services/taskService';
 import Modal from './Modal';
+import toast from 'react-hot-toast';
 
 const TaskFormModal = ({ isOpen, onClose, taskId = null, onTaskSaved }) => {
   const isEditMode = !!taskId;
@@ -35,6 +36,7 @@ const TaskFormModal = ({ isOpen, onClose, taskId = null, onTaskSaved }) => {
           setFormErrors({});
         } catch (err) {
           setError('Failed to fetch task details');
+          toast.error('Failed to fetch task details');
           console.error(err);
         } finally {
           setLoading(false);
@@ -98,6 +100,7 @@ const TaskFormModal = ({ isOpen, onClose, taskId = null, onTaskSaved }) => {
     const errors = validateForm();
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
+      toast.error('Please fix the form errors');
       return;
     }
 
@@ -110,11 +113,13 @@ const TaskFormModal = ({ isOpen, onClose, taskId = null, onTaskSaved }) => {
         savedTask = await updateTask(taskId, formData);
       } else {
         savedTask = await createTask(formData);
+        toast.success('Task created successfully');
       }
       onTaskSaved(savedTask);
       onClose();
     } catch (err) {
       setError(err.message || 'Failed to save task');
+      toast.error(err.message || 'Failed to save task');
       console.error('Task save error:', err);
     } finally {
       setSubmitting(false);

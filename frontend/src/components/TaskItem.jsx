@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { deleteTask } from '../services/taskService';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
+import toast from 'react-hot-toast';
 
 const TaskItem = ({ task, onDelete, onUpdate, onEditClick }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -29,9 +30,10 @@ const TaskItem = ({ task, onDelete, onUpdate, onEditClick }) => {
     try {
       await deleteTask(task._id);
       onDelete(task._id);
+      toast.success('Task deleted successfully');
     } catch (err) {
       console.error('Failed to delete task:', err);
-      alert('Failed to delete task');
+      toast.error('Failed to delete task');
     } finally {
       setIsDeleteModalOpen(false);
     }

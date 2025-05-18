@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { getTask, deleteTask } from "../services/taskService";
 import TaskFormModal from "../components/TaskFormModal";
 import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
+import toast from "react-hot-toast";
 
 const TaskDetail = () => {
   const { id } = useParams();
@@ -21,6 +22,7 @@ const TaskDetail = () => {
         setTask(taskData);
       } catch (err) {
         setError("Failed to fetch task details");
+        toast.error("Failed to fetch task details");
         console.error(err);
       } finally {
         setLoading(false);
@@ -37,13 +39,19 @@ const TaskDetail = () => {
   const handleDeleteConfirm = async () => {
     try {
       await deleteTask(task._id);
+      toast.success("Task deleted successfully");
       navigate("/"); // Navigate back to dashboard after deletion
     } catch (err) {
       console.error("Failed to delete task:", err);
-      alert("Failed to delete task");
+      toast.error("Failed to delete task");
     } finally {
       setIsDeleteModalOpen(false);
     }
+  };
+
+  const handleTaskSaved = (updatedTask) => {
+    setTask(updatedTask);
+    toast.success("Task updated successfully");
   };
 
   const statusColors = {
@@ -191,7 +199,7 @@ const TaskDetail = () => {
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         taskId={id}
-        onTaskSaved={setTask}
+        onTaskSaved={handleTaskSaved}
       />
 
       <DeleteConfirmationModal

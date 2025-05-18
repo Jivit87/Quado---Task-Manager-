@@ -2,7 +2,7 @@ import { createContext, useState, useEffect, useContext, useCallback } from 'rea
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://quado-task-manager-backend.onrender.com/api',
+  baseURL: import.meta.env.VITE_BACKEND_URL,
 });
 
 api.interceptors.response.use(

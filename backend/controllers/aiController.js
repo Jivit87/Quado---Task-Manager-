@@ -83,7 +83,7 @@ const generateDailyPlan = async (req, res) => {
       }).join('\n');
       
       const prompt = `
-      Based on these tasks, create an optimal daily plan selecting 3-4 most important tasks. 
+      Based on these tasks, create an optimal daily plan selecting 4-5 most important tasks. 
       Format the output as a schedule with specific time slots.
       
       Current Tasks:

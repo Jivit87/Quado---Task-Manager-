@@ -3,13 +3,8 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  server: {
-    proxy: {
-      '/api': {
-        target: 'https://quado-task-manager-backend.onrender.com',
-        changeOrigin: true,
-        secure: true,
-      },
-    },
+  build: {
+    outDir: 'dist',
   },
+  base: '/',
 });

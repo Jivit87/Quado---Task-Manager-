@@ -1,25 +1,21 @@
 import axios from "axios";
 
-const API_URL = "/api/ai";
+const API_URL = import.meta.env.VITE_BACKEND_URL + "/ai";
 
 const getToken = () => {
   return localStorage.getItem("token");
 };
 
 const configureAxios = () => {
+  const token = getToken();
   return {
-    headers: {
-      Authorization: `Bearer ${getToken()}`,
-    },
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
   };
 };
 
 const getSuggestedPriority = async (taskId) => {
   try {
-    const response = await axios.get(
-      `${API_URL}/priority/${taskId}`,
-      configureAxios()
-    );
+    const response = await axios.get(`${API_URL}/priority/${taskId}`, configureAxios());
     return response.data;
   } catch (error) {
     console.error("Error getting priority suggestion:", error);
@@ -58,8 +54,13 @@ const getMotivationalQuote = async () => {
 };
 
 const getWeeklyFocusSuggestion = async () => {
-  const response = await axios.get("/ai/weekly-focus", configureAxios());
-  return response.data;
+  try {
+    const response = await axios.get(`${API_URL}/weekly-focus`, configureAxios());
+    return response.data;
+  } catch (error) {
+    console.error("Error getting weekly focus suggestion:", error);
+    throw error;
+  }
 };
 
 const aiService = {
@@ -67,7 +68,7 @@ const aiService = {
   getDailyPlan,
   getTaskInsights,
   getMotivationalQuote,
-  getWeeklyFocusSuggestion
+  getWeeklyFocusSuggestion,
 };
 
 export default aiService;

@@ -236,60 +236,9 @@ const getMotivationalQuote = async (req, res) => {
   }
 };
 
-// Get weekly focus suggestion based on past tasks
-const getWeeklyFocusSuggestion = async (req, res) => {
-  try {
-    // Get tasks from the last week
-    const lastWeek = new Date();
-    lastWeek.setDate(lastWeek.getDate() - 7);
-    
-    const tasks = await Task.find({
-      user: req.user._id,
-      createdAt: { $gte: lastWeek }
-    });
-
-    // Analyze task categories/tags
-    const categoryCount = {};
-    tasks.forEach(task => {
-      if (task.category) {
-        categoryCount[task.category] = (categoryCount[task.category] || 0) + 1;
-      }
-    });
-
-    // Find most frequent category
-    let mostFrequentCategory = null;
-    let maxCount = 0;
-    for (const [category, count] of Object.entries(categoryCount)) {
-      if (count > maxCount) {
-        maxCount = count;
-        mostFrequentCategory = category;
-      }
-    }
-
-    // Generate suggestion using Gemini
-    const model = getGeminiModel();
-    const prompt = `Based on the user's task history, they completed ${maxCount} tasks in the "${mostFrequentCategory}" category last week. 
-    Generate a friendly, encouraging suggestion for them to focus on this category again this week. 
-    Keep it concise and actionable. Format: "Last week, you did X tasks in [category]. Want to focus on [category] this week?"`;
-
-    const result = await model.generateContent(prompt);
-    const suggestion = result.response.text();
-
-    res.json({
-      suggestion,
-      category: mostFrequentCategory,
-      count: maxCount
-    });
-  } catch (error) {
-    console.error("Error getting weekly focus suggestion:", error);
-    res.status(500).json({ message: "Failed to generate weekly focus suggestion" });
-  }
-};
-
 module.exports = {
   suggestPriority,
   generateDailyPlan,
   getTaskInsights,
   getMotivationalQuote,
-  getWeeklyFocusSuggestion
 };

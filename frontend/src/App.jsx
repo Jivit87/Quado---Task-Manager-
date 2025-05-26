@@ -27,7 +27,6 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        {/* Note: Wrap the entire application with AuthContext Provider */}
         <ToastProvider />
         <Routes>
           {/* Public routes */}

@@ -10,7 +10,7 @@ import {
 import Dashboard from "./pages/Dashboard";
 import TaskForm from "./pages/TaskForm";
 import TaskDetail from "./pages/TaskDetail";
-// Note: Login and Register pages will be implemented by you
+
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 

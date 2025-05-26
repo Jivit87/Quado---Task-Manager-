@@ -21,7 +21,6 @@ import ToastProvider from "./components/ToastProvider";
 import AIAssistant from "./pages/AIAssistant";
 
 // Context
-// Note: AuthContext will be implemented by you
 import { AuthProvider } from "./context/AuthContext";
 
 function App() {
@@ -85,8 +84,6 @@ function App() {
               </PrivateRoute>
             }
           />
-
-          {/* Catch-all route */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
